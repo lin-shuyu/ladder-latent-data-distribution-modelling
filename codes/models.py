@@ -4,7 +4,6 @@ import tensorflow_probability as tfp
 tfd = tfp.distributions
 
 from base import BaseModel
-from utils import count_trainable_variables
 import modules
 
 
