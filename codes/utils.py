@@ -29,7 +29,7 @@ def save_config(config):
     """
     dateTimeObj = datetime.now()
     timestampStr = dateTimeObj.strftime("%d-%b-%Y-%H-%M")
-    filename = config['result_dir'] + 'training_config_{}.txt'.format(timestampStr)
+    filename = config['checkpoint_dir'] + 'training_config_{}.txt'.format(timestampStr)
     config_to_save = json.dumps(config)
     f = open(filename, "w")
     f.write(config_to_save)
@@ -56,11 +56,11 @@ def process_config(json_file):
         config['n_mixtures'])
     print("Experiment results will be saved at:\n{}\n".format(save_name))
 
-    if config['exp_name'] == "celebA":
-        config['data_path'] = '/home/shuyu/Documents/dataset/celeba/'
+    # if config['exp_name'] == "celebA":
+    #     config['data_path'] = '/home/shuyu/Documents/dataset/celeba/'
 
     if config['load_dir'] == "default":
-        save_dir = "../experiments/{}/batch-{}".format(
+        save_dir = "./experiments/{}/batch-{}".format(
             config['exp_name'],
             config['batch_size'])
     else:

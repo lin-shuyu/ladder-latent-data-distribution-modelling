@@ -1,7 +1,7 @@
 # import matplotlib
 # matplotlib.use('Agg')
 
-from base import BaseTrain, BaseTrain_joint, BaseTrain_switch
+from base import BaseTrain, BaseTrain_joint
 import numpy as np
 import matplotlib.pylab as plt
 from matplotlib.pyplot import plot, savefig, figure
@@ -36,17 +36,15 @@ class MNISTTrainer_joint_training(BaseTrain_joint):
                 loss = self.train_step_ae(cur_lr=self.cur_lr, batch_data=training_batch)
                 self.train_loss.append(np.squeeze(loss))
                 train_loss_cur_epoch = train_loss_cur_epoch + loss
-            if self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
+            if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
                 self.train_step_prior(batch_data=training_batch)
-            if self.config['num_iter_to_plot'] > 1 and np.any(self.idx_check_point == i):
-                if self.config['code_size'] == 2:
-                    self.plot_test_posterior(i, batch_data=self.test_batch)
+
         if self.config['TRAIN_VAE'] == 1:
             self.train_loss_ave_epoch.append(train_loss_cur_epoch / self.n_train_iter)
             self.iter_epochs_list.append(len(self.train_loss) - 1)
 
         # fit a GM in representation or code space
-        if self.config['prior'] in ["ours", "GMM"]:
+        if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['prior'] in ["ours", "GMM"]:
             self.fit_GM(iterator=self.model.input_image)
 
         # generate samples from prior
@@ -63,7 +61,7 @@ class MNISTTrainer_joint_training(BaseTrain_joint):
         for i in range(self.n_val_iter):
             val_batch = self.sess.run(self.model.input_image)
             val_loss = self.val_step(batch_data=val_batch, model_to_train="VAE")
-            if self.config['prior'] in ['ours', 'hierarchical', 'vampPrior']:
+            if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior']:
                 _ = self.val_step(batch_data=val_batch, model_to_train="prior")
             val_loss_cur_epoch = val_loss_cur_epoch + val_loss
         self.val_loss_ave_epoch.append(val_loss_cur_epoch / self.n_val_iter)
@@ -81,7 +79,7 @@ class MNISTTrainer_joint_training(BaseTrain_joint):
         # plot the training and validation loss over iterations/epochs
         if self.config['TRAIN_VAE'] == 1:
             self.plot_train_and_val_loss(model_to_train="VAE")
-        if self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
+        if self.cur_epoch > self.config['sg_pretraining'] and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
             self.plot_train_and_val_loss(model_to_train="prior")
 
     def plot_reconstructed_data(self, images, save_name=None, title=True, narrow_space=False):
@@ -153,19 +151,18 @@ class CelebATrainer_joint_training(BaseTrain_joint):
                 loss = self.train_step_ae(cur_lr=self.cur_lr, batch_data=training_batch)
                 self.train_loss.append(np.squeeze(loss))
                 train_loss_cur_epoch = train_loss_cur_epoch + loss
-            if self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
+            if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior'] and self.config['TRAIN_prior'] == 1:
                 self.train_step_prior(batch_data=training_batch)
             if self.config['num_iter_to_plot'] > 1 and np.any(self.idx_check_point == i):
                 self.test_step(batch_data=self.test_batch, print_result=False)
                 self.plot_reconstructed_image(i, self.output_test, self.test_batch)
-                if self.config['code_size'] == 2:
-                    self.plot_test_posterior(i, batch_data=self.test_batch)
+
         if self.config['TRAIN_VAE'] == 1:
             self.train_loss_ave_epoch.append(train_loss_cur_epoch/self.n_train_iter)
             self.iter_epochs_list.append(len(self.train_loss)-1)
 
         # fit a GM in representation or code space
-        if self.config['prior'] in ["ours", "GMM"]:
+        if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['prior'] in ["ours", "GMM"]:
             self.fit_GM(iterator=self.model.input_image)
 
         # generate samples from prior
@@ -183,7 +180,7 @@ class CelebATrainer_joint_training(BaseTrain_joint):
             if self.config['TRAIN_VAE'] == 1:
                 val_loss = self.val_step(batch_data=val_batch, model_to_train="VAE")
                 val_loss_cur_epoch = val_loss_cur_epoch + val_loss
-            if self.config['TRAIN_prior'] == 1 and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior']:
+            if self.cur_epoch > self.config['sg_pretraining']-1 and self.config['TRAIN_prior'] == 1 and self.config['prior'] in ['ours', 'hierarchical', 'vampPrior']:
                 _ = self.val_step(batch_data=val_batch, model_to_train="prior")
         self.val_loss_ave_epoch.append(val_loss_cur_epoch/self.n_val_iter)
         if self.config['TRAIN_VAE'] == 1:

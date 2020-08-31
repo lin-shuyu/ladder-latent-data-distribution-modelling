@@ -392,11 +392,7 @@ class BaseModel:
             # sigma regularisor
             # See Supplementary Material Part C for more details
             self.input_dim = self.config['dim_input_x'] * self.config['dim_input_y'] * self.config['dim_input_channel']
-            if self.config['likelihood_model'] == 'Gaussian':
-                self.sigma_regularisor = - self.input_dim * tf.log(self.sigma) - \
-                                         self.input_dim / 2 * tf.log(self.two_pi)
-            elif self.config['likelihood_model'] == 'Laplace':
-                self.sigma_regularisor = - self.input_dim * tf.log(2 * self.sigma)
+            self.sigma_regularisor = - self.input_dim * tf.log(2 * self.sigma)
             self.sigma_regularisor = tf.squeeze(self.sigma_regularisor)
 
             # Assemble all the parts together to make ELBO loss
@@ -856,7 +852,7 @@ class BaseTrain_joint(BaseTrain):
 
             # save the model after finishing one epoch
             if self.config['prior'] in ["ours", "hierarchical", "vampPrior"]:
-                self.model.save(self.sess, model=self.config['training_style'])
+                self.model.save(self.sess, model="joint")
             elif self.config['prior'] in ["standard_gaussian", "GMM"]:
                 self.model.save(self.sess, model="VAE")
 
@@ -869,7 +865,7 @@ class BaseTrain_joint(BaseTrain):
                          self.model.is_code_input: False,
                          self.model.code_input: np.zeros((1, self.config['code_size']))}
         elif self.config['prior'] == 'ours':
-            if self.cur_epoch <= 1:
+            if self.cur_epoch <= self.config['sg_pretraining']:
                 feed_dict = {self.model.original_signal: batch_data,
                              self.model.prior_mean: np.zeros((self.config['n_mixtures'],
                                                               self.config['representation_size'])),
@@ -878,6 +874,7 @@ class BaseTrain_joint(BaseTrain):
                                  (self.config['n_mixtures'], 1, 1)),
                              self.model.prior_weight: 1 / self.config['n_mixtures'] * np.ones(
                                  self.config['n_mixtures']),
+                             self.model.use_standard_gaussian_prior: True,
                              self.model.is_code_input: False,
                              self.model.code_input: np.zeros((1, self.config['code_size'])),
                              self.model.is_outer_VAE_input: True,
@@ -889,6 +886,7 @@ class BaseTrain_joint(BaseTrain):
                              self.model.prior_mean: self.model.GM_prior_training.means_,
                              self.model.prior_cov: self.model.GM_prior_training.covariances_,
                              self.model.prior_weight: self.model.GM_prior_training.weights_,
+                             self.model.use_standard_gaussian_prior: False,
                              self.model.is_code_input: False,
                              self.model.code_input: np.zeros((1, self.config['code_size'])),
                              self.model.is_outer_VAE_input: True,
@@ -899,10 +897,7 @@ class BaseTrain_joint(BaseTrain):
                 feed_dict[self.model.use_mask] = True
             else:
                 feed_dict[self.model.use_mask] = False
-            if self.cur_epoch <= self.config['sg_pretraining']:
-                feed_dict[self.model.use_standard_gaussian_prior] = True
-            else:
-                feed_dict[self.model.use_standard_gaussian_prior] = False
+
         elif self.config['prior'] == "hierarchical":
             feed_dict = {self.model.original_signal: batch_data,
                          self.model.is_code_input: False,
@@ -1060,20 +1055,23 @@ class BaseTrain_joint(BaseTrain):
         fig.clf()
         plt.close()
 
-    def generate_samples_from_prior_by_method(self, mode="crude-GM", n_sample=10):
-        if self.config['prior'] == 'standard_gaussian':
+    def generate_samples_from_prior_by_method(self, mode="crude-GM", n_sample=10, method=None):
+        if method is None:
+            method = self.config['prior']
+
+        if method == 'standard_gaussian':
             rv = multivariate_normal(np.zeros(self.config['code_size']), np.diag(np.ones(self.config['code_size'])))
             # Generate a batch size of samples from the prior samples
             samples_code_prior = rv.rvs(n_sample ** 2)
             filename = self.config['result_dir'] + 'generated_samples_prior_{}.pdf'.format(self.cur_epoch)
-        elif self.config['prior'] == 'GMM':
+        elif method == 'GMM':
             if mode == "crude-GM":
                 samples = self.model.GM_prior_training.sample(n_sample ** 2)
             else:
                 samples = self.GM_prior_final.sample(n_sample ** 2)
             filename = self.config['result_dir'] + 'generated_samples_prior_{}_{}.pdf'.format(self.cur_epoch, mode)
             samples_code_prior = samples[0]
-        elif self.config['prior'] == 'ours':
+        elif method == 'ours':
             if mode == "crude-GM":
                 samples = self.model.GM_prior_training.sample(n_sample ** 2)
             else:
@@ -1093,7 +1091,7 @@ class BaseTrain_joint(BaseTrain):
                                                               (1, self.config['code_size'])),
                                                           self.model.representation_input: sample_t,
                                                           self.model.is_representation_input: True})
-        elif self.config['prior'] == 'hierarchical':
+        elif method == 'hierarchical':
             rv = multivariate_normal(np.zeros(self.config['representation_size']),
                                      np.diag(np.ones(self.config['representation_size'])))
             sample_t = rv.rvs(n_sample ** 2)
@@ -1111,7 +1109,7 @@ class BaseTrain_joint(BaseTrain):
                                                               (1, self.config['code_size'])),
                                                           self.model.representation_input: sample_t,
                                                           self.model.is_representation_input: True})
-        elif self.config['prior'] == 'vampPrior':
+        elif method == 'vampPrior':
             samples_code_prior = self.sess.run(self.model.psedeu_prior.sample(n_sample ** 2))
             filename = self.config['result_dir'] + 'generated_samples_prior_{}.pdf'.format(self.cur_epoch)
         return samples_code_prior, filename
@@ -1141,12 +1139,16 @@ class BaseTrain_joint(BaseTrain):
 
     def generate_samples_from_prior(self):
         if self.config['prior'] == 'ours':
-            if self.cur_epoch % self.config['accurate_fit'] == 0 or self.cur_epoch == self.config['num_epochs']:
-                samples, filename = self.generate_samples_from_prior_by_method(mode="accurate-GM")
+            if self.cur_epoch <= self.config['sg_pretraining']:
+                samples, filename = self.generate_samples_from_prior_by_method(method='standard_gaussian')
                 self.plot_generated_samples_from_prior(samples, filename)
             else:
-                samples, filename = self.generate_samples_from_prior_by_method(mode="crude-GM")
-                self.plot_generated_samples_from_prior(samples, filename)
+                if self.cur_epoch % self.config['accurate_fit'] == 0 or self.cur_epoch == self.config['num_epochs']:
+                    samples, filename = self.generate_samples_from_prior_by_method(mode="accurate-GM")
+                    self.plot_generated_samples_from_prior(samples, filename)
+                else:
+                    samples, filename = self.generate_samples_from_prior_by_method(mode="crude-GM")
+                    self.plot_generated_samples_from_prior(samples, filename)
         elif self.config['prior'] == 'GMM':
             if self.cur_epoch < self.config['num_epochs']:
                 samples, filename = self.generate_samples_from_prior_by_method(mode="crude-GM")
@@ -1165,12 +1167,12 @@ class BaseTrain_joint(BaseTrain):
             axs.plot(self.train_loss, 'b-')
             axs.plot(self.iter_epochs_list, self.val_loss_ave_epoch, 'r-')
             axs.legend(('training loss (total)', 'validation loss'))
-            axs.set_title('training loss over iterations (val @ epochs)')
+            axs.set_title('Negative ELBO over iterations (val @ epochs)')
             axs.set_ylabel('total loss')
             axs.set_xlabel('iterations')
             axs.set_xlim([0, len(self.train_loss)])
             axs.grid(True)
-            savefig(self.config['result_dir'] + '/loss.pdf')
+            savefig(self.config['result_dir'] + '/loss-elbo.pdf')
             plt.close()
 
             # plot individual components of validation loss over epochs
@@ -1193,8 +1195,8 @@ class BaseTrain_joint(BaseTrain):
             axs[3].set_xlim([0, len(self.elbo_val)])
             axs[3].set_title("ELBO")
             axs[3].grid(True)
-            plt.suptitle("Outer VAE val losses")
-            savefig(self.config['result_dir'] + '/val-loss.pdf')
+            # plt.suptitle("Outer VAE val losses")
+            savefig(self.config['result_dir'] + '/loss-outer-VAE-val.pdf')
             plt.close()
 
             # plot sigma2 over epochs
@@ -1203,7 +1205,7 @@ class BaseTrain_joint(BaseTrain):
                 plot(self.test_sigma, 'b-')
                 plt.title('scale parameter over training')
                 plt.ylabel('sigma')
-                plt.xlabel('iter')
+                plt.xlabel('epoch (zero index)')
                 plt.ylim([0, self.config['sigma']])
                 plt.xlim([0, len(self.test_sigma)])
                 plt.grid(True)
@@ -1243,7 +1245,7 @@ class BaseTrain_joint(BaseTrain):
                 axs[6].axis('off')
                 axs[7].axis('off')
                 plt.suptitle("Inner VAE losses")
-                savefig(self.config['result_dir'] + '/inner-VAE-loss.pdf')
+                savefig(self.config['result_dir'] + '/loss-inner-VAE.pdf')
                 plt.close()
             else:
                 fig, axs = plt.subplots(1, 2, figsize=(8, 2), edgecolor='k')
