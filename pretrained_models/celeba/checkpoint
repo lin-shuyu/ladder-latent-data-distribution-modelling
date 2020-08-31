@@ -1,0 +1,2 @@
+model_checkpoint_path: "prior-model"
+all_model_checkpoint_paths: "prior-model"
