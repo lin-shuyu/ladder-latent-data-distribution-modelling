@@ -63,14 +63,16 @@ def process_config(json_file):
         save_dir = "./experiments/{}/batch-{}".format(
             config['exp_name'],
             config['batch_size'])
+        config['summary_dir'] = os.path.join(save_dir, save_name, "summary/")
+        config['result_dir'] = os.path.join(save_dir, save_name, "result/")
+        config['checkpoint_dir'] = os.path.join(save_dir, save_name, "checkpoint/")
     else:
         save_dir = config['load_dir']
-    print("Created save_dir and save_name and stored in config dict.")
-
-    config['summary_dir'] = os.path.join(save_dir, save_name, "summary/")
-    config['result_dir'] = os.path.join(save_dir, save_name, "result/")
-    config['checkpoint_dir'] = os.path.join(save_dir, save_name, "checkpoint/")
-    print("The trained models will be saved at:\n{}\n".format(config['checkpoint_dir']))
+        config['summary_dir'] = "../figures/{}/summary/".format(config['exp_name'])
+        config['result_dir'] = "../figures/{}/result/".format(config['exp_name'])
+        config['checkpoint_dir'] = os.path.join(save_dir, config['exp_name'])
+    print("Models will be saved / loaded at:\n{}".format(config['checkpoint_dir']))
+    print("Results will be saved at:\n{}\n".format(config['result_dir']))
 
     return config
 

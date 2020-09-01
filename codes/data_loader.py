@@ -1,18 +1,18 @@
 import numpy as np
 import tensorflow as tf
 
-from base import BaseDataGenerator
+from .base import BaseDataGenerator
 
 
 class DataGenerator(BaseDataGenerator):
     def __init__(self, config, sess):
         super(DataGenerator, self).__init__(config, sess)
         # load data here: generate 3 state variables: train_set, val_set and test_set
-        if self.config['exp_name'] == 'MNIST_digit':
+        if self.config['exp_name'] == 'mnist_digit':
             self.load_MNIST_dataset('digit')
-        elif self.config['exp_name'] == 'MNIST_fashion':
+        elif self.config['exp_name'] == 'mnist_fashion':
             self.load_MNIST_dataset('fashion')
-        elif self.config['exp_name'] == 'celebA':
+        elif self.config['exp_name'] == 'celeba':
             self.n_train = 180000
             self.n_val = 20000
 

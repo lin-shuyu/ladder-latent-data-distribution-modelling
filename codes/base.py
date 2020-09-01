@@ -12,7 +12,7 @@ from matplotlib.patches import Ellipse
 from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 from scipy.stats import norm, multivariate_normal
 
-from utils import count_trainable_variables
+from .utils import count_trainable_variables
 
 
 class BaseDataGenerator:
@@ -36,13 +36,13 @@ class BaseModel:
 
     def init_saver(self):
         # here you initialize the tensorflow saver that will be used in saving the checkpoints.
-        self.saver_path_ae = "{}vae-model".format(self.config['checkpoint_dir'])
+        self.saver_path_ae = os.path.join(self.config['checkpoint_dir'], 'vae-model')
         self.saver_ae = tf.train.Saver(
             max_to_keep=self.config['max_to_keep'],
             var_list=self.VAE_outer_vars + self.sigma_vars)
 
         if self.config['prior'] in ["ours", "hierarchical", "vampPrior"]:
-            self.saver_path_prior = "{}prior-model".format(self.config['checkpoint_dir'])
+            self.saver_path_prior = os.path.join(self.config['checkpoint_dir'], 'prior-model')
             self.saver_prior = tf.train.Saver(
                 max_to_keep=self.config['max_to_keep'],
                 var_list=self.prior_vars)
@@ -66,7 +66,7 @@ class BaseModel:
 
     # load latest checkpoint from the experiment path defined in the config file
     def load(self, sess, model):
-        print("checkpoint_dir to be loaded:\n{}\n".format(
+        print("\ncheckpoint_dir to be loaded:\n{}\n".format(
             self.config['checkpoint_dir']))
 
         if model == "VAE":
@@ -1009,7 +1009,7 @@ class BaseTrain_joint(BaseTrain):
                     self.plot_prior_distribution(samples, mode="accurate-GM", style='circle')
                     self.plot_prior_distribution(samples, mode="accurate-GM", style='density')
 
-    def plot_prior_distribution(self, samples, mode="crude-GM", style='circle'):
+    def plot_prior_distribution(self, samples, mode="crude-GM", style='circle', show_img=False):
         if mode == "crude-GM":
             w = self.model.GM_prior_training.weights_
             m = self.model.GM_prior_training.means_
@@ -1024,9 +1024,12 @@ class BaseTrain_joint(BaseTrain):
             axs.scatter(samples[:, 0], samples[:, 1], s=1, c='b')
             for i in idx_valid_mixture:
                 self.draw_ellipse(m[i], K[i], weight=w[i])
-            # axs.set_xlim([-10, 10])
-            # axs.set_ylim([-10, 10])
+            axs.set_xlim([-10, 10])
+            axs.set_ylim([-10, 10])
             axs.set(aspect='equal')
+            axs.set_title("Fitting a GMM to a batch of encodings")
+            if show_img:
+                plt.show()
             savefig(self.config['result_dir'] + 'prior_estimate_circle_{}_{}.pdf'.format(self.cur_epoch, mode))
         elif style == 'density':
             # grid point
@@ -1051,6 +1054,8 @@ class BaseTrain_joint(BaseTrain):
             axs.set_yticks(ticks)
             axs.set_yticklabels(labels)
             fig.colorbar(im)
+            if show_img:
+                plt.show()
             savefig(self.config['result_dir'] + "prior_estimate_density_{}_{}.pdf".format(self.cur_epoch, mode))
         fig.clf()
         plt.close()

@@ -1,7 +1,7 @@
 # import matplotlib
 # matplotlib.use('Agg')
 
-from base import BaseTrain, BaseTrain_joint
+from .base import BaseTrain, BaseTrain_joint
 import numpy as np
 import matplotlib.pylab as plt
 from matplotlib.pyplot import plot, savefig, figure

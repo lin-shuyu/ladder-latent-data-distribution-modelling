@@ -6,10 +6,10 @@ import matplotlib
 matplotlib.use('Agg')
 
 import tensorflow as tf
-from data_loader import DataGenerator
-from models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
-from trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
-from utils import process_config, create_dirs, get_args, save_config
+from .data_loader import DataGenerator
+from .models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
+from .trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
+from .utils import process_config, create_dirs, get_args, save_config
 
 
 def main():

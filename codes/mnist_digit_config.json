@@ -1,5 +1,5 @@
 {
-    "exp_name": "MNIST_fashion",
+    "exp_name": "mnist_digit",
     "loss_function": "ELBO",
     "prior": "ours",
     "inner_activation": "leaky_relu",

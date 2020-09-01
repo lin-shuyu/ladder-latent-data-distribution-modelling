@@ -1,5 +1,5 @@
 {
-    "exp_name": "celebA",
+    "exp_name": "celeba",
     "data_path": "/home/shuyu/Documents/dataset/celeba/",
     "loss_function": "ELBO",
     "prior": "ours",

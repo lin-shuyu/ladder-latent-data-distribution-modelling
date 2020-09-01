@@ -3,3 +3,5 @@ ladder-env/
 codes/__pycache__/
 codes/.ipynb_checkpoints/
 .idea/
+demo/.ipynb_checkpoints/
+demo/__pycache__/
