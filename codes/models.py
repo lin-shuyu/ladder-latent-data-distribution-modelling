@@ -3,8 +3,8 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 tfd = tfp.distributions
 
-from .base import BaseModel
-from . import modules
+from base import BaseModel
+import modules
 
 
 class MNISTModel_digit(BaseModel):

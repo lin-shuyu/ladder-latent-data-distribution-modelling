@@ -12,7 +12,7 @@ from matplotlib.patches import Ellipse
 from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
 from scipy.stats import norm, multivariate_normal
 
-from .utils import count_trainable_variables
+from utils import count_trainable_variables
 
 
 class BaseDataGenerator:

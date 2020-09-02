@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
-from .base import BaseDataGenerator
+from base import BaseDataGenerator
 
 
 class DataGenerator(BaseDataGenerator):

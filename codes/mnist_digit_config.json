@@ -23,7 +23,7 @@
     "dim_input_x": 28,
     "dim_input_y": 28,
     "dim_input_channel": 1,
-    "code_size": 16,
+    "code_size": 8,
     "representation_size": 2,
     "TRAIN_VAE": 1,
     "TRAIN_sigma": 1,

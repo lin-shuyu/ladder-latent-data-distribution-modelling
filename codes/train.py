@@ -5,11 +5,14 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import matplotlib
 matplotlib.use('Agg')
 
+import sys
+sys.path.append("..")
+
 import tensorflow as tf
-from .data_loader import DataGenerator
-from .models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
-from .trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
-from .utils import process_config, create_dirs, get_args, save_config
+from data_loader import DataGenerator
+from models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
+from trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
+from utils import process_config, create_dirs, get_args, save_config
 
 
 def main():
@@ -38,11 +41,11 @@ def main():
     data = DataGenerator(config, sess)
 
     # create VAE models
-    if config['exp_name'] == 'MNIST_digit':
+    if config['exp_name'] == 'mnist_digit':
         model = MNISTModel_digit(config)
-    elif config['exp_name'] == 'MNIST_fashion':
+    elif config['exp_name'] == 'mnist_fashion':
         model = MNISTModel_fashion(config)
-    elif config['exp_name'] == 'celebA':
+    elif config['exp_name'] == 'celeba':
         model = CelebAModel_densenet(config)
     print("Created a VAE model.")
     print("The current dataset is {}, num hidden units: {}.\n".format(
@@ -51,9 +54,9 @@ def main():
 
     # here you train your model
     if config['TRAIN_VAE'] or config['TRAIN_sigma'] or config['TRAIN_prior']:
-        if config['exp_name'] == 'MNIST_digit' or config['exp_name'] == 'MNIST_fashion':
+        if config['exp_name'] == 'mnist_digit' or config['exp_name'] == 'mnist_fashion':
             trainer_VAE = MNISTTrainer_joint_training(sess, model, data, config)
-        elif config['exp_name'] == 'celebA':
+        elif config['exp_name'] == 'celeba':
             trainer_VAE = CelebATrainer_joint_training(sess, model, data, config)
 
         # load model if exists: after the init in creating trainer
