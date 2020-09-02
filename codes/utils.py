@@ -68,8 +68,8 @@ def process_config(json_file):
         config['checkpoint_dir'] = os.path.join(save_dir, save_name, "checkpoint/")
     else:
         save_dir = config['load_dir']
-        config['summary_dir'] = "../figures/{}/summary/".format(config['exp_name'])
-        config['result_dir'] = "../figures/{}/result/".format(config['exp_name'])
+        config['summary_dir'] = "./figures/{}/summary/".format(config['exp_name'])
+        config['result_dir'] = "./figures/{}/result/".format(config['exp_name'])
         config['checkpoint_dir'] = os.path.join(save_dir, config['exp_name'])
     print("Models will be saved / loaded at:\n{}".format(config['checkpoint_dir']))
     print("Results will be saved at:\n{}\n".format(config['result_dir']))

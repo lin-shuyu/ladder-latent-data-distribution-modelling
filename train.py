@@ -9,10 +9,10 @@ import sys
 sys.path.append("..")
 
 import tensorflow as tf
-from data_loader import DataGenerator
-from models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
-from trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
-from utils import process_config, create_dirs, get_args, save_config
+from codes.data_loader import DataGenerator
+from codes.models import MNISTModel_digit, MNISTModel_fashion, CelebAModel_densenet
+from codes.trainers import MNISTTrainer_joint_training, CelebATrainer_joint_training
+from codes.utils import process_config, create_dirs, get_args, save_config
 
 
 def main():

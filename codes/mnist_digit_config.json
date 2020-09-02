@@ -10,7 +10,7 @@
     "load_dir": "default",
     "num_epochs": 30,
     "use_mask_start": 50,
-    "sg_pretraining": 10,
+    "sg_pretraining": 5,
     "num_iter_to_plot": 2,
     "accurate_fit": 10,
     "kernel_size": 3,

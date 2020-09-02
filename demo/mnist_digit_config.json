@@ -7,7 +7,7 @@
     "GM_fit_restart": 1,
     "n_MC_samples": 100,
     "load_model": 1,
-    "load_dir": "../pretrained_models/",
+    "load_dir": "./pretrained_models/",
     "num_epochs": 30,
     "use_mask_start": 50,
     "sg_pretraining": 10,
