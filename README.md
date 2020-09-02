@@ -41,9 +41,13 @@ Our demo code in `demo/` uses a jupyter notebook. To add the virtualenv `ladder-
 
 
 ## Code structure 
-Our code is organised in the following manner. The codes needed to train LaDDer are all kept in `codes/` folder. The functional codes, such as dataloader, models and trainers, are in python scripts. We use `.json` file to specify model parameters for the training for each dataset. The provided `.json` files contain parameters that work well for our models, but pls feel free to modify different parameters for your interest. 
+Our code is organised in the following manner. The main codes for running the training and for using a demo for latent space interpolation are at top level and in the files `train.py` and `latent-space-interpolation-mnist.ipynb` respectively.
 
-We also prepare a demo code in jupyter notebook for using the derived data distribution for latent space interpolation. As we proposed in our paper, the knowledge of the data distribution can better facilitate downstream tasks. We propose a method to integrate such knowledge to better interpolate between a pair of images. The demo is given in `demo/` folder. It only contains a demo for MNIST dataset for now. We will add another demo for CelebA dataset. The generated figures in the demo code will be saved to `figures/` folder for your reference.
+The codes needed to train LaDDer are all kept in `codes/` folder. The functional codes, such as dataloader, models and trainers, are in python scripts. We use `.json` file to specify model parameters for the training for each dataset. The provided `.json` files contain parameters that work well for our models, but pls feel free to modify different parameters for your interest. 
+
+We also prepare a demo code in jupyter notebook for using the derived data distribution for latent space interpolation. As we proposed in our paper, the knowledge of the data distribution can better facilitate downstream tasks. We propose a method to integrate such knowledge to better interpolate between a pair of images. All the supporting files for the demo is given in `demo/` folder. 
+
+The majorIt only contains a demo for MNIST dataset for now. We will add another demo for CelebA dataset. The generated figures in the demo code will be saved to `figures/` folder for your reference.
 
 We also offer pre-trained models for all three datasets and they are saved in `pretrained_models`. The latent space interpolation demo will need these pre-trained models. 
 
@@ -52,7 +56,7 @@ We also offer pre-trained models for all three datasets and they are saved in `p
 To start a training, please follow the following procedures:
 1. Open a terminal and direct to the LaDDer folder.
 2. Activate the virtualenv on the command line: `source ladder-env/bin/activate`
-3. Run `python3 codes/train.py --config codes/mnist_digit_config.json`, for example, to start a training for MNIST digit dataset. Please change the `.json` file to others for other datasets. 
+3. Run `python3 train.py --config codes/mnist_digit_config.json`, for example, to start a training for MNIST digit dataset. Please change the `.json` file to others for other datasets. 
 
 The training for MNIST digit and fashion should be able to run without a GPU. Feel free to try. 
 
@@ -63,10 +67,9 @@ The training results (reconstruction plots and generated samples) and trained mo
 To use our demo code, please:
 1. First install all the required libraries, add the virtualenv as a jupyter kernel.
 2. Launch a jupyter notebook by calling `jupyter-notebook` on the command line in the project folder. 
-3. Navigate to the `demo/` folder.
-4. Open `latent-space-interpolation-mnist.ipynb`.
-5. Run the code prepared one cell at a time. The default setting will initiate a latent space interpolation for MNIST digit dataset. 
-6. Please feel free to change parameters, such as `n_step`, `n_iter` and start and end image index (`idx_start` and `idx_end`), to see results for different setting. 
+3. Open `latent-space-interpolation-mnist.ipynb`.
+4. Run the code prepared one cell at a time. The default setting will initiate a latent space interpolation for MNIST digit dataset. 
+5. Please feel free to change parameters, such as `n_step`, `n_iter` and start and end image index (`idx_start` and `idx_end`), to see results for different setting. 
 
 \[To add\] `.json` file for MNIST fashion dataset for the interpolation demo and the demo code for CelebA dataset. 
 
