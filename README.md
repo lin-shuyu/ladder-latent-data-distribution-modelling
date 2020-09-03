@@ -1,6 +1,6 @@
 # LaDDer: Latent Data Distribution Modelling (BMVC'20)
 
-This Github repository hosts our code and demos for LaDDer, a method that allows the accurate modelling of the data distribution in the low-dimensional latent space, as proposed in our paper:
+This Github repository hosts our code and demos for LaDDer, a method that allows the accurate modelling of the data distribution in a low-dimensional latent space, as proposed in our paper:
 <br><br>
 [LaDDer: Latent Data Distribution Modelling with a Generative Prior](https://arxiv.org/abs/2009.00088). 
 <br>
