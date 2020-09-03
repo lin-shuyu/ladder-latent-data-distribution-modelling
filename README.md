@@ -1,11 +1,11 @@
 # LaDDer: Latent Data Distribution Modelling (BMVC'20)
 
 This Github repository hosts our code and demos for LaDDer, a method that allows the accurate modelling of the data distribution in a low-dimensional latent space, as proposed in our paper:
-<br><br>
+
   [LaDDer: Latent Data Distribution Modelling with a Generative Prior](https://arxiv.org/abs/2009.00088). 
-<br>
+
   [Shuyu Lin<sup>1</sup>](https://shuyulin.co.uk/) and [Ronald Clark<sup>2</sup>](http://www.ronnieclark.co.uk)
-<br>
+
   <sup>1</sup>University of Oxford, <sup>2</sup>Imperial College London
 
 Usually a fixed prior distribution is adopted to be the data distribution and the encoder is hoped to be powerful enough to transform the high-dimensional data samples (such as images) into a latent space where the data distribute complies with the fixed prior distribution. However, we find this assumption is often overly strict. 
