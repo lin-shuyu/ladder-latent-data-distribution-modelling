@@ -29,7 +29,7 @@ We use 3 datasets in this project.
 
 
 ## Environment and libraries needed
-Our code is written in Python3 with Tensorflow 1.15 library. Please install the python libraries listed in the `requirements.txt`. We suggest to build a virtual environment using virtualenv package (we named our virtual environment for this project as `ladder-env`). To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+Our code is written in Python3 with Tensorflow 1.15.2 library. Please install the python libraries listed in the `requirements.txt`. We suggest to build a virtual environment using virtualenv package (we named our virtual environment for this project as `ladder-env`). To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 
 Our demo code in `demo/` uses a jupyter notebook. To add the virtualenv `ladder-env` to the notebook kernel, please:
 1. Open a terminal and direct to the LaDDer folder.
