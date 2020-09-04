@@ -25,7 +25,7 @@ Using [Google Colab](https://colab.research.google.com) is the easiest way to ru
 ```
 Then run the training script train.py for MNIST datasets by executing:
 
-`!python3 ladder-latent-data-distribution-modelling/train.py --config ladder-latent-data-distribution-modelling/codes/mnist_digit_config.json`
+`!python3 train.py --config codes/mnist_digit_config.json`
 
 Or, run the interpolation demo script as follows:
 
