@@ -16,6 +16,20 @@ A comparison of the derived data distribution across 5 methods for the MNIST dat
 
 <img align="middle" src="figures/readme_fig/2d-latent-space.png" alt="overview" width="1280"/>
 
+## Running on Google Colab
+Using [Google Colab](https://colab.research.google.com) is the easiest way to run the code. Simply open a new notebook, then execute the following commands (exactly as shown) to set the Tensorflow version and clone the repository:
+```
+%tensorflow_version 1.x
+!git clone https://github.com/lin-shuyu/ladder-latent-data-distribution-modelling.git
+%cd ladder-latent-data-distribution-modelling
+```
+Then run the training script train.py for MNIST datasets by executing:
+
+`!python3 ladder-latent-data-distribution-modelling/train.py --config ladder-latent-data-distribution-modelling/codes/mnist_digit_config.json`
+
+Or, run the interpolation demo script as follows:
+
+`%run latent-space-interpolation-mnist.ipynb`
 
 ## Dataset
 We use 3 datasets in this project. 
