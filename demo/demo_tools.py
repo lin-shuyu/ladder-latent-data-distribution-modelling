@@ -160,9 +160,9 @@ def plot_interpolation_losses(loss, path_length_record, step_var_record, neg_ll_
 
 
 # plot the interpolated images along the path
-def plot_interpolated_images(interpolated_embeddings, config, exp_name, sess, data, model, trainer,
-                             n_step, idx_start, idx_end,
-                             font_size=16, save_plot=False, name_input=''):
+def plot_interpolated_images(
+    interpolated_embeddings, config, exp_name, sess, data, model, trainer,
+    n_step, idx_start, idx_end, font_size=16, save_plot=False, name_input=''):
     save_dir = config['result_dir']
     if "mnist" in exp_name:
         x = np.expand_dims(data.val_set['image'][0], axis=0)

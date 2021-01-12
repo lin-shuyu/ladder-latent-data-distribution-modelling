@@ -5,3 +5,5 @@ codes/.ipynb_checkpoints/
 .idea/
 .ipynb_checkpoints/
 demo/__pycache__/
+figures/ronnie_demo/
+figures/mnist_digit/

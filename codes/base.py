@@ -1009,7 +1009,9 @@ class BaseTrain_joint(BaseTrain):
                     self.plot_prior_distribution(samples, mode="accurate-GM", style='circle')
                     self.plot_prior_distribution(samples, mode="accurate-GM", style='density')
 
-    def plot_prior_distribution(self, samples, mode="crude-GM", style='circle', show_img=False):
+    def plot_prior_distribution(
+        self, samples, 
+        mode="crude-GM", style='circle', show_img=False, axis_scale=10):
         if mode == "crude-GM":
             w = self.model.GM_prior_training.weights_
             m = self.model.GM_prior_training.means_
@@ -1024,8 +1026,8 @@ class BaseTrain_joint(BaseTrain):
             axs.scatter(samples[:, 0], samples[:, 1], s=1, c='b')
             for i in idx_valid_mixture:
                 self.draw_ellipse(m[i], K[i], weight=w[i])
-            axs.set_xlim([-10, 10])
-            axs.set_ylim([-10, 10])
+            axs.set_xlim([-axis_scale, axis_scale])
+            axs.set_ylim([-axis_scale, axis_scale])
             axs.set(aspect='equal')
             axs.set_title("Fitting a GMM to a batch of encodings")
             if show_img:
@@ -1033,12 +1035,12 @@ class BaseTrain_joint(BaseTrain):
             savefig(self.config['result_dir'] + 'prior_estimate_circle_{}_{}.pdf'.format(self.cur_epoch, mode))
         elif style == 'density':
             # grid point
-            x, y = np.mgrid[-10:10:.05, -10:10:.05]
+            x, y = np.mgrid[-axis_scale:axis_scale:.05, -axis_scale:axis_scale:.05]
             pos = np.empty(x.shape + (2,))
             pos[:, :, 0] = x
             pos[:, :, 1] = y
-            ticks = np.arange(0, 400, 40)
-            labels = (-10, -8, -6, -4, -2, 0, 2, 4, 6, 8)
+            ticks = np.arange(0, axis_scale*20*2, 40)
+            labels = tuple(np.arange(-axis_scale, axis_scale, 2))
             for i in idx_valid_mixture:
                 rv = multivariate_normal(m[i], K[i])
                 if i == idx_valid_mixture[0]:
