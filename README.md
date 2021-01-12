@@ -46,14 +46,14 @@ We use 3 datasets in this project.
 Our code is written in Python3 with Tensorflow 1.15 library. The python libraries we used in the project are listed in the `requirements.txt`. We suggest to build a virtual environment using either virtualenv package or miniconda. we named our virtual environment for this project as `ladder-env`. Details of setting up the virtual environment is given below. 
 
 ### Setting up environment with venv / virtualenv
-To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). After virtualenv or venv is installed, create the `ladder-env` environment and activate. **Note**: tensorflow 1 can only be installed with python 3.5-3.7. ..
-Update pip: `pip3 install --upgrade pip`..
-Install the required libraries: `pip3 install -r requirements.txt`..
+To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). After virtualenv or venv is installed, create the `ladder-env` environment and activate. **Note**: tensorflow 1 can only be installed with python 3.5-3.7. ...
+Update pip: `pip3 install --upgrade pip`...
+Install the required libraries: `pip3 install -r requirements.txt`...
 
 ### Setting up environment with conda
-To install and set up (mini)conda, please follow the procedures [here](https://docs.conda.io/en/latest/miniconda.html). After (mini)conda is installed,.. 
-Create the `ladder-env` environment: `conda create --name ladder-env python=3.7`..
-Activate the environment: `conda activate ladder-env`..
+To install and set up (mini)conda, please follow the procedures [here](https://docs.conda.io/en/latest/miniconda.html). After (mini)conda is installed,...
+Create the `ladder-env` environment: `conda create --name ladder-env python=3.7`...
+Activate the environment: `conda activate ladder-env`...
 Install the required libraries: 
 ```python
 conda install matplotlib scikit-learn scipy tqdm jupyter numpy
