@@ -10,7 +10,7 @@ jupyter
 #   See https://www.python.org/dev/peps/pep-0440/#version-specifiers
 numpy == 1.16.0
 opencv-contrib-python>=4.1.0.25
-tensorflow-gpu == 1.15             
+tensorflow-gpu == 2.4.0             
 tensorflow_probability == 0.8.0            # Minimum version 0.8.0
 
 
