@@ -43,12 +43,30 @@ We use 3 datasets in this project.
 
 
 ## Environment and libraries needed
-Our code is written in Python3 with Tensorflow 1.15.2 library. Please install the python libraries listed in the `requirements.txt`. We suggest to build a virtual environment using virtualenv package (we named our virtual environment for this project as `ladder-env`). To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+Our code is written in Python3 with Tensorflow 1.15 library. The python libraries we used in the project are listed in the `requirements.txt`. We suggest to build a virtual environment using either virtualenv package or miniconda. we named our virtual environment for this project as `ladder-env`. Details of setting up the virtual environment is given below. 
 
+### Setting up environment with venv / virtualenv
+To install and set up virtualenv, please follow the procedures [here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/). After virtualenv or venv is installed, create the `ladder-env` environment and activate. **Note**: tensorflow 1 can only be installed with python 3.5-3.7.
+1. Update pip: `pip3 install --upgrade pip`
+2. Install the required libraries: `pip3 install -r requirements.txt`
+
+### Setting up environment with conda
+To install and set up (mini)conda, please follow the procedures [here](https://docs.conda.io/en/latest/miniconda.html). After (mini)conda is installed,
+1. Create the `ladder-env` environment: `conda create --name ladder-env python=3.7`
+2. Activate the environment: `conda activate ladder-env`
+3. Install the required libraries: 
+```python
+conda install matplotlib scikit-learn scipy tqdm jupyter numpy
+conda install -c conda-forge opencv
+conda install -c conda-forge tensorflow=1.15
+conda install -c conda-forge tensorflow-probability=0.8.0
+pip install -U dm-sonnet==1.23
+``` 
+
+### Add `ladder-env` to ipython kernel
 Our demo code in `demo/` uses a jupyter notebook. To add the virtualenv `ladder-env` to the notebook kernel, please:
 1. Open a terminal and direct to the LaDDer folder.
-2. Set up virtualenv `ladder-env` following the previous suggestion. 
-3. Activate the virtualenv on the command line: `source ladder-env/bin/activate`
+3. Activate the virtual environment on the command line: `source ladder-env/bin/activate` with venv / virtualenv or `conda activate ladder-env` with conda. 
 4. Add the virtualenv as a jupyter kernel: `ipython kernel install --name "ladder-env" --user`
 
 
