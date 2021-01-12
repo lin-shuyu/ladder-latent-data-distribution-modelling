@@ -7,3 +7,4 @@ codes/.ipynb_checkpoints/
 demo/__pycache__/
 figures/ronnie_demo/
 figures/mnist_digit/
+generate-samples.ipynb
