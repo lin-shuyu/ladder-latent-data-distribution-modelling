@@ -66,8 +66,8 @@ pip install -U dm-sonnet==1.23
 ### Add `ladder-env` to ipython kernel
 Our demo code in `demo/` uses a jupyter notebook. To add the virtualenv `ladder-env` to the notebook kernel, please:
 1. Open a terminal and direct to the LaDDer folder.
-3. Activate the virtual environment on the command line: `source ladder-env/bin/activate` with venv / virtualenv or `conda activate ladder-env` with conda. 
-4. Add the virtualenv as a jupyter kernel: `ipython kernel install --name "ladder-env" --user`
+2. Activate the virtual environment on the command line: `source ladder-env/bin/activate` with venv / virtualenv or `conda activate ladder-env` with conda. 
+3. Add the virtualenv as a jupyter kernel: `ipython kernel install --name "ladder-env" --user`
 
 
 ## Code structure 
