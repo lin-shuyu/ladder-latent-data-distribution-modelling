@@ -2,7 +2,7 @@
 
 This Github repository hosts our code and demos for LaDDer, a method that allows the accurate modelling of the data distribution in a low-dimensional latent space, as proposed in our paper:
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LaDDer: Latent Data Distribution Modelling with a Generative Prior](https://arxiv.org/abs/2009.00088).<br> 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LaDDer: Latent Data Distribution Modelling with a Generative Prior](https://www.bmvc2020-conference.com/conference/papers/paper_0816.html).<br> 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Shuyu Lin<sup>1</sup>](https://shuyulin.co.uk/) and [Ronald Clark<sup>2</sup>](http://www.ronnieclark.co.uk)<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sup>1</sup>University of Oxford, <sup>2</sup>Imperial College London<br>
 
